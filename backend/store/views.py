@@ -48,21 +48,21 @@ class CustomAuthToken(ObtainAuthToken):
 class VendorView(viewsets.ModelViewSet):
     serializer_class = VendorSerializer
     queryset = Vendor.objects.all()
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class PurchaseOrderView(viewsets.ModelViewSet):
     serializer_class = PurchaseOrderSerializer
     queryset = PurchaseOrder.objects.all()
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class VendorPerformanceView(generics.RetrieveAPIView):
     queryset = Vendor.objects.all()
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = VendorPerformanceSerializer
     lookup_field = 'id'
 
@@ -84,7 +84,8 @@ def acknowledge_purchase_order(request, po_id):
 
 
 class PurchaseOrderAcknowledgmentViewSet(generics.UpdateAPIView):
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = PurchaseOrder.objects.all()
     serializer_class = PurchaseOrderAcknowledgmentSerializer
     lookup_field = 'id'

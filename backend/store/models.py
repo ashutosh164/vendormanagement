@@ -28,6 +28,16 @@ class Vendor(models.Model):
             self.average_response_time = None
         self.save()
 
+    def update_on_time_delivery_rate(self):
+        completed_purchase_order = PurchaseOrder.objects.filter(vendor=self, status="Completed")
+        if completed_purchase_order.count() > 0:
+            on_time_purchase_orders = completed_purchase_order.filter(delivery_complete_date__gte=F('delivery_date'))
+            on_time_delivery_data = on_time_purchase_orders.count() / completed_purchase_order.count()
+            return on_time_delivery_data
+        else:
+            on_time_delivery_data = None
+            return on_time_delivery_data
+
 
 class PurchaseOrder(models.Model):
     STATUS_CHOICES = (
@@ -63,6 +73,7 @@ class HistoricalPerformance(models.Model):
 
     def __str__(self):
         return f"Historical Performance for {self.vendor} on {self.date}"
+
 
 
 
