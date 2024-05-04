@@ -38,6 +38,36 @@ class Vendor(models.Model):
             on_time_delivery_data = None
             return on_time_delivery_data
 
+    def quality_rating_average(self):
+        completed_purchase_orders_with_quality_rating = PurchaseOrder.objects.filter(vendor=self, status="Completed", quality_rating__isnull=False)
+        quality_ratings = [item.quality_rating for item in completed_purchase_orders_with_quality_rating]
+        if quality_ratings:
+            calculate_quality_ratings_average = sum(quality_ratings) / len(quality_ratings)
+            return calculate_quality_ratings_average
+        else:
+            calculate_quality_ratings_average = None
+            return calculate_quality_ratings_average
+
+    def calculate_average_response_time(self):
+        completed_purchase_orders_with_acknowledgment = PurchaseOrder.objects.filter(vendor=self, acknowledgment_date__isnull=False)
+        response_times = [(purchase_order.acknowledgment_date - purchase_order.issue_date).total_seconds() for purchase_order in completed_purchase_orders_with_acknowledgment]
+        if response_times:
+            average_response_time = sum(response_times) / len(response_times)
+            return average_response_time
+        else:
+            average_response_time = None
+            return average_response_time
+
+    def fulfilment_rate(self):
+        all_completed_status_without_issue = PurchaseOrder.objects.filter(vendor=self, status='Completed', issue_date__isnull=True)
+        total_all = PurchaseOrder.objects.filter(vendor=self)
+        if total_all.count() > 0:
+            fulfilment_rate = all_completed_status_without_issue.count() / total_all.count()
+            return fulfilment_rate
+        else:
+            fulfilment_rate = None
+            return fulfilment_rate
+
 
 class PurchaseOrder(models.Model):
     STATUS_CHOICES = (
