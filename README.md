@@ -45,3 +45,20 @@ Install required dependencies (pip install -r requirements.txt).
 Run migrations (python manage.py migrate).
 Start the development server (python manage.py runserver).
 
+Test :
+1. you can test the code the using POSTMAN
+
+OR using python requests file follow the code given bellow
+Example:-
+
+import requests
+
+url = 'http://127.0.0.1:8000/api/vendors/'
+
+header = {"Authorization": "Token 6863550cc647d7a3501445863e83b0f5cda5f621"}
+get_response = requests.get(url, headers=header)
+print(get_response.json())
+
+
+
+
